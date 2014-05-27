@@ -1,0 +1,15 @@
+package types {
+		
+	native string 
+	native int  
+	native double
+	native boolean 
+	native anySimpleType
+	native decimal
+	native token 
+	
+	entity Fault {
+		name : string
+	}
+		
+}

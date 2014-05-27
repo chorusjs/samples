@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# This is the Chorus.js | calculateArea_v1 install script!
+#
+
+mkdir logs
+npm install
+node calculateArea_v1.js
+
