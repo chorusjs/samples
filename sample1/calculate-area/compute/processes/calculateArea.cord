@@ -7,7 +7,7 @@ package cords {
 		   
 		environment dev {
 			server dev1 {
-				gliiph
+				localhost
 				bundle calculator {
 					port 3000
 					service compute 1.0 as calculator
