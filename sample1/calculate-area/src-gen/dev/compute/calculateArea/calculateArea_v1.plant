@@ -1,0 +1,17 @@
+@startuml
+
+title calculateArea
+
+participant client
+participant process
+participant calculator
+
+client->process: calculateRectangleArea(input)
+activate process
+process->calculator: multiply(values)
+activate calculator
+calculator->process: area
+deactivate calculator
+process->client: output
+deactivate process
+@enduml

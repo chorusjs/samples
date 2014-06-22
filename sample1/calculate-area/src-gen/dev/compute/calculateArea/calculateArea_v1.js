@@ -76,10 +76,14 @@ app.use('/services/compute', sr);
 //activity paths
 var processName = 'calculateArea' ;
 var processVersion = 'v1' ;
+logger.warn('------------ Process Endpoints ---------------');
 var calculateArea_calculateRectangleArea_receive = '/'+processName+'/'+processVersion+'/receive/calculateRectangleArea' ;
 logger.warn('[ENDPOINT] calculateArea_calculateRectangleArea_receive') ;
 var calculateArea_calculateArea_invoke = '/'+processName+'/'+processVersion+'/invoke/calculateArea' ;
 logger.warn('[ENDPOINT] calculateArea_calculateArea_invoke') ;
+logger.warn('\n------------ Admin Console -------------------');
+logger.warn('[ENDPOINT] /chorus/calculateArea/util/instances') ;
+logger.warn('\n------------ Server started ------------------');
 
 //Root structure of a process instance
 function Process(name, version,request) {
@@ -87,6 +91,8 @@ function Process(name, version,request) {
     this.version = version ;
     //this.receive = request ;
     this.sequence = { "receive" : request } ;
+    var d = new Date();
+    this.startTime = d.getTime() ;
 }
 
 pr.use(function(req, res, next) {
@@ -112,14 +118,16 @@ pr.get('/util/instances', function(req, res, next) {
     
     if (pid === undefined) {
         var collection = db.instances.find(function(err, instances) {
-        if (err || !instances) logger.warn("no instances found") ;
-        else { 
+        if (err || !instances) { 
+        	logger.warn("no instance found") ;
+        	res.send("no instance found");
+        } else { 
             output += '<p>found '+instances.length+' records</p>'
+ 			output += '<table><tbody><tr><th>id</th><th>status</th><th>last activity</th></tr>'
             instances.forEach(function(instance) {
-                output += 'found:'+instance._id+'<br/>' ;
-                output += JSON.stringify(instance)+'<br/><br/>';
+                output += '<tr><td><a href="instances/'+instance._id+'">'+instance._id+'</a></td><td><a href="instances/state/'+instance.status+'">'+instance.status+'</a></td><td>'+instance.last+'</td></tr>' ;
             });
-            //foreach is blocking
+            output += '</tbody></table>';   //note foreach is blocking
             res.send(output);
         }
     }); //end find-function        
@@ -150,6 +158,33 @@ pr.get('/util/instances/:id', function(req, res, next) {
       next() ;
   }
   
+}); 
+
+pr.get('/util/instances/state/:state', function(req, res, next) {
+  // ..
+    var state = req.param("state") ;
+
+    var output = '<h2>Process: calculateArea<br/>state: '+state+'</h2>'
+    var query = { status : state} ;
+    if (state !== null) {
+        var collection = db.instances.find( query, function(err, instances) {
+        if (err || !instances) { 
+        	logger.warn("no instances found") ;
+        	res.send(output);
+        } else { 
+                output += '<p>found '+instances.length+' records</p>'
+                output += '<table><tbody><tr><th>id</th><th>status</th><th>last activity</th></tr>'
+                instances.forEach(function(instance) {
+                    output += '<tr><td><a href="instances/'+instance._id+'">'+instance._id+'</a></td><td>'+instance.status+'</td><td>'+instance.last+'</td></tr>' ;
+                });
+                output += '</tbody></table>';
+                res.send(output);
+             }
+            }); 
+        
+    } else {
+        next() ;
+     }
 }); 
 
 
@@ -190,11 +225,13 @@ function assignInputToValues(arg, pid, res, output) {
     		logger.warn("[ASSIGN] values") ;
     	} else {
 
+//WARNING Feature level assignments are not supported yet 
 var __values = doc.vars.input ;	
 doc.vars.values = __values ;
 doc.last = "assignInputToValues" ;
 db.instances.save(doc) ;
 logger.trace("[ASSIGN] values = "+JSON.stringify(doc.vars.input));
+
 		invokeCalculateArea(__values, pid, res, output) ;
 		logger.trace("[ASSIGN] exit");
 	}});
@@ -248,7 +285,7 @@ logger.trace("[INVOKE] request<pid:"+pid+"> values:"+JSON.stringify(values)) ;
         _id:mongojs.ObjectId(pid)
     }, function(err, doc) {
         logger.trace('found process instance:'+doc.name) ;
-        doc.sequence.invoke = { "service" : "http://gliiph:3000/services/calculator/multiply/", "request" : requestData } ;
+        doc.sequence.invoke = { "service" : "http://localhost:3000/services/calculator/multiply/", "request" : requestData } ;
         //would be payload instead of query for a POST
         db.instances.save(doc) ;
    
@@ -257,7 +294,7 @@ logger.trace("[INVOKE] request<pid:"+pid+"> values:"+JSON.stringify(values)) ;
    		logger.trace("[INVOKE] multiplyRequest: "+JSON.stringify(req.body)) ;
    		
    		//Invoke the service
-   		http.get('http://gliiph:3000/services/compute/multiply/?a='+multiplyRequest.input.a+'&b='+multiplyRequest.input.b, function(getres) {
+   		http.get('http://localhost:3000/services/compute/multiply/?a='+multiplyRequest.input.a+'&b='+multiplyRequest.input.b, function(getres) {
             logger.trace("[INVOKE] response code: " + getres.statusCode);
           
             getres.on("data", function(chunk) {
@@ -300,11 +337,13 @@ function assignAreaToOutput(arg, pid, res, output) {
     		logger.warn("[ASSIGN] output") ;
     	} else {
 
+//WARNING Feature level assignments are not supported yet 
 var __output = doc.vars.area ;	
 doc.vars.output = __output ;
 doc.last = "assignAreaToOutput" ;
 db.instances.save(doc) ;
 logger.trace("[ASSIGN] output = "+JSON.stringify(doc.vars.area));
+
 		replyCalculateRectangleArea(__output,pid, res, output) ;
 		logger.trace("[ASSIGN] exit");
 	}});
@@ -326,9 +365,12 @@ function replyCalculateRectangleArea(data,pid,res,output) {
 	        if (doc !== undefined) {
 	            logger.trace('[CONTEXT] updating context for process:'+doc.name) ;
 	            doc.sequence.reply =  doc.vars.output ; 
+	            var d = new Date();
 	            doc.status = "completed" ;
-	            				doc.last = "replyCalculateRectangleArea" ;
-	            		
+	                            doc.endTime = d.getTime() ;
+	            doc.last = "replyCalculateRectangleArea" ;
+	            doc.lastTime = d.getTime() ;
+	            
 	            db.instances.save(doc) ;//, { writeConcern: { j : 1}});
 	            
 	            logger.trace("[REPLY] returning response: " + JSON.stringify(doc.sequence.reply));

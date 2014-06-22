@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>
+-->
+
+<wsdl:definitions name="compute_v1_0"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:soap11="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wssu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:msg="http://www.example.com/computation/messages/compute_v1"
+	xmlns:tns="http://www.example.com/computation/compute_v1_0"
+	targetNamespace="http://www.example.com/computation/compute_v1_0"
+>
+
+
+
+	<wsdl:types>
+		<xsd:schema elementFormDefault="unqualified" attributeFormDefault="unqualified"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:msg="http://www.example.com/computation/messages/compute_v1"
+			targetNamespace="http://www.example.com/computation/messages/compute_v1"
+		>
+
+	<!-- Message: addRequest-->
+	<xsd:complexType name="DoubleOperand">
+		<xsd:sequence>
+			<xsd:element name="a" type="xsd:double"/>
+			<xsd:element name="b" type="xsd:double"/>
+	    </xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="addRequest" type="msg:DoubleOperand"/>        	
+
+	<!-- Message: addResponse-->
+	 <xsd:complexType name="DoubleResult">
+		<xsd:sequence>
+			<xsd:element name="res" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="addResponse" type="msg:DoubleResult"/>        	
+
+	<!-- Message: addResponse-->
+	 <xsd:complexType name="Fault">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="fault" type="msg:Fault"/>        	
+	
+
+	<!-- Message: subtractRequest-->
+	<xsd:element name="subtractRequest" type="msg:DoubleOperand"/>        	
+
+	<!-- Message: subtractResponse-->
+	
+	<xsd:element name="subtractResponse" type="msg:DoubleResult"/>        	
+
+	<!-- Message: subtractResponse-->
+	
+	
+
+	<!-- Message: multiplyRequest-->
+	<xsd:element name="multiplyRequest" type="msg:DoubleOperand"/>        	
+
+	<!-- Message: multiplyResponse-->
+	
+	<xsd:element name="multiplyResponse" type="msg:DoubleResult"/>        	
+
+	<!-- Message: multiplyResponse-->
+	
+	
+
+	<!-- Message: divideRequest-->
+	<xsd:element name="divideRequest" type="msg:DoubleOperand"/>        	
+
+	<!-- Message: divideResponse-->
+	
+	<xsd:element name="divideResponse" type="msg:DoubleResult"/>        	
+
+	<!-- Message: divideResponse-->
+	
+	
+
+	<!-- Message: squareRequest-->
+	<xsd:element name="squareRequest" type="msg:DoubleOperand"/>        	
+
+	<!-- Message: squareResponse-->
+	
+	<xsd:element name="squareResponse" type="msg:DoubleResult"/>        	
+
+	<!-- Message: squareResponse-->
+	
+	
+	
+		
+		</xsd:schema>
+
+	</wsdl:types>
+
+	<!-- Message Definition -->
+	
+
+	<wsdl:message name="addRequest">
+		<wsdl:part name="input" element="msg:addRequest"/>
+	</wsdl:message>
+	<wsdl:message name="addResponse">
+		<wsdl:part name="input" element="msg:addResponse"/>
+	</wsdl:message>
+	<wsdl:message name="fault">
+		<wsdl:part name="fault" element="msg:fault"/>
+	</wsdl:message>
+
+	<wsdl:message name="subtractRequest">
+		<wsdl:part name="input" element="msg:subtractRequest"/>
+	</wsdl:message>
+	<wsdl:message name="subtractResponse">
+		<wsdl:part name="input" element="msg:subtractResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="multiplyRequest">
+		<wsdl:part name="input" element="msg:multiplyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="multiplyResponse">
+		<wsdl:part name="input" element="msg:multiplyResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="divideRequest">
+		<wsdl:part name="input" element="msg:divideRequest"/>
+	</wsdl:message>
+	<wsdl:message name="divideResponse">
+		<wsdl:part name="input" element="msg:divideResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="squareRequest">
+		<wsdl:part name="input" element="msg:squareRequest"/>
+	</wsdl:message>
+	<wsdl:message name="squareResponse">
+		<wsdl:part name="input" element="msg:squareResponse"/>
+	</wsdl:message>
+	
+	<!-- PortType Definition -->
+	
+	<wsdl:portType name="compute_v1_0">
+		
+		<wsdl:operation name="add">
+			<wsdl:input message="tns:addRequest"/>
+			<wsdl:output message="tns:addResponse"/>
+			<wsdl:fault name="fault" message="tns:fault"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="subtract">
+			<wsdl:input message="tns:subtractRequest"/>
+			<wsdl:output message="tns:subtractResponse"/>
+			<wsdl:fault name="fault" message="tns:fault"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="multiply">
+			<wsdl:input message="tns:multiplyRequest"/>
+			<wsdl:output message="tns:multiplyResponse"/>
+			<wsdl:fault name="fault" message="tns:fault"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="divide">
+			<wsdl:input message="tns:divideRequest"/>
+			<wsdl:output message="tns:divideResponse"/>
+			<wsdl:fault name="fault" message="tns:fault"/>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="square">
+			<wsdl:input message="tns:squareRequest"/>
+			<wsdl:output message="tns:squareResponse"/>
+			<wsdl:fault name="fault" message="tns:fault"/>
+		</wsdl:operation>	
+	</wsdl:portType>
+	
+	<wsdl:binding name="compute_v1_0Bindings" type="tns:compute_v1_0">
+		<soap11:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="add">
+			<soap11:operation
+				soapAction="http://www.example.com/computation/compute_v1/add" />
+			<wsdl:input>
+				<soap11:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap11:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap11:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add">
+			<soap11:operation
+				soapAction="http://www.example.com/computation/compute_v1/subtract" />
+			<wsdl:input>
+				<soap11:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap11:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap11:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add">
+			<soap11:operation
+				soapAction="http://www.example.com/computation/compute_v1/multiply" />
+			<wsdl:input>
+				<soap11:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap11:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap11:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add">
+			<soap11:operation
+				soapAction="http://www.example.com/computation/compute_v1/divide" />
+			<wsdl:input>
+				<soap11:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap11:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap11:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add">
+			<soap11:operation
+				soapAction="http://www.example.com/computation/compute_v1/square" />
+			<wsdl:input>
+				<soap11:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap11:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap11:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	
+	<!-- Service Definition -->
+	
+	<wsdl:service name="compute_v1_0">
+		
+		<wsdl:port name="compute_v1_0_compute"
+				   binding="tns:compute_v1_0Bindings">
+			<soap11:address location="/compute/compute_v1"/>
+		</wsdl:port>
+			
+		
+	</wsdl:service>
+	
+</wsdl:definitions>

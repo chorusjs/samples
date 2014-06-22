@@ -4,7 +4,7 @@ package cords {
 		
 		import services.computation.* 
 		import types.* 
-		   
+		      
 		environment dev {
 			server dev1 {
 				localhost
@@ -14,9 +14,9 @@ package cords {
 					process calculateArea
 				}     
 			}
-		}
-		     
-		  	  	     	 	 		 
+		} 
+	  	       
+		            	  	            	  	  		 
 		process calculateArea version 1  {
 			     
 			service compute 1.0 as calculator

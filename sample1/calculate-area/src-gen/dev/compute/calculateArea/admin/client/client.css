@@ -1,0 +1,38 @@
+* {
+    padding: 1px;
+    margin: 1px;
+}
+
+html {
+    padding: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    font-size: 13px;
+    line-height: 1.1;
+    background: #eeeeee;
+    color: #333333;
+}
+
+html, body {
+    height: 100%;
+}
+
+.login-buttons-dropdown-align-right {
+    float: right;
+}
+
+#instances .instance-name {
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+}
+
+#instances .completed {
+    padding: 2px 6px;
+    background: #9be;
+}
+
+
+

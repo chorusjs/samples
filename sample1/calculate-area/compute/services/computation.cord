@@ -8,21 +8,21 @@ package services {
 		entity IntOperand {
 			a : int 
 			b : int 
-		}
-		
+		}   
+		   
 		entity IntResult {
 			res : int 
 		}
-
+     
 		entity DoubleOperand {
 			a : double 
 			b : double 
 		}
-		
+		 
 		entity DoubleResult  {
 			res : double 
 		}
-		
+				
 		//Message Definitions		  
 		message addRequest  {
 			part input -> DoubleOperand
@@ -39,7 +39,7 @@ package services {
 		message subtractResponse {
 			part ouput -> DoubleResult
 		}
-
+ 
 		message multiplyRequest {
 			part input -> DoubleOperand
 		}
@@ -115,7 +115,7 @@ package services {
 
 		operation divideResponse divide (divideRequest)
 			throws fault {
-			
+			  
 				GET
 			
 				'''    
@@ -129,8 +129,8 @@ package services {
 				    res.send(respMessage);
 				'''	
 			}
-			
-
+			 
+ 
 		operation squareResponse square (squareRequest)
 			throws fault {
 				
@@ -148,10 +148,10 @@ package services {
 		
 		//Binding definition
 		binding HTTPBindings HTTP {
-			
+			 
 			default {
 				request input 
-				response Response
+				response output
 				throws fault 
 			}
 		}

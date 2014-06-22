@@ -1,0 +1,9 @@
+#![calculateArea]	
+
+client:client[a]
+process:process[a,x]
+calculator:compute
+
+client:output=process.calculateRectangleArea(input)
+process:area=calculator.multiply(values)
+client:stop

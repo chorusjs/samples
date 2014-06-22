@@ -1,0 +1,20 @@
+@startuml
+class IntOperand{
+a:int
+b:int
+}
+
+class IntResult{
+res:int
+}
+
+class DoubleOperand{
+a:double
+b:double
+}
+
+class DoubleResult{
+res:double
+}
+
+@enduml

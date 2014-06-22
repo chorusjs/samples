@@ -1,0 +1,51 @@
+<head>
+  <title>Chorus | calculateArea_v1 | dev</title>
+</head>
+<head>
+  <title>Chorus.js Admin Console</title>
+</head>
+
+<body>
+  {{> loginButtons align="right"}}<br>
+  <h2>Chorus.js</h2>
+  {{> process }}
+  {{> instances }}
+  <br/>
+  {{> instance }}
+</body>
+
+<template name="process">
+  <p>
+    calculateArea_v1 | dev
+  </p>
+</template>
+
+<template name="instances">
+    <div id="instances">
+        <div style="height:400px; overflow-y:scroll">
+        <table><tbody width="100%">
+        <tr><th>instance id</th><th>last executed</th><th>status</th></tr>
+        {{#each instances}}
+        <tr><td><div class="instance"><a href="/{{_id.toHexString}}">{{_id.toHexString}}</a></div></td><td>{{last}}</td><td><div class="instance {{status}}">{{status}}</div></td></tr>
+        {{/each}}
+        </tbody></table>
+        </div>
+  </div>
+</template>
+
+<template name="instance">
+{{#if instance_selected}}
+       <div class="instance">
+    {{#each instance}}
+          <p>instance: {{pid.toHexString}} / {{status}}</p>
+          <table valign="top"><tbody>
+              <tr><td valign="top" width="100px">started:</td><td valign="top" width="300px"><pre>{{startTime}}</pre></td><td valign="top" width="100px">ended:</td><td valign="top" width="300px"><pre>{{endTime}}</pre></td></tr>
+              <tr><td valign="top" width="100px">last:</td><td valign="top" width="300px"><pre>{{last}}</pre></td><td valign="top" width="100px">status:</td><td valign="top" width="300px"><pre>{{status}}</pre></td></tr>
+              <tr><td valign="top" width="100px">vars:</td><td valign="top" colspan="3"><pre>{{varsAsString}}</pre> </td></tr>
+          </tbody></table>
+    {{/each}}
+       </div>
+{{else}}
+  <p>Select an instance</p>
+{{/if}}
+</template>
